@@ -7,6 +7,7 @@ canvas = new BackgroundLayer
 	backgroundColor: Utils.randomColor()
 
 document.body.style.cursor = "auto"
+Framer.Extras.Preloader.disable()
 
 # Grid
 
@@ -117,13 +118,25 @@ isBlank = ->
 		if beep.on then return false
 	return true
 
-while isBlank()
-	options =
-		x: Math.floor Utils.randomNumber 0, 3
-		y: Math.floor Utils.randomNumber 0, 3
-		duplicatesOrMirrors: Utils.randomChoice ["dupl", "mirr"]
+reset = ->
+	canvas.backgroundColor = Utils.randomColor()
+	for beep in grid
+		beep.on = false
 
-	type1 options
+cooperate = ->
+	while isBlank()
+		options =
+			x: Math.floor Utils.randomNumber 0, 3
+			y: Math.floor Utils.randomNumber 0, 3
+			duplicatesOrMirrors: Utils.randomChoice ["dupl", "mirr"]
+	
+		type1 options
+
+container.onTap ->
+	reset()
+	cooperate()
+
+cooperate()
 
 ## parts
 
