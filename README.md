@@ -1,4 +1,4 @@
-![co-operator](https://cdn.rawgit.com/izuchukwu/co-operator/master/co-operator.svg)
+![co-operator](https://cdn.rawgit.com/izuchukwu/co-operator/master/co-operator-1.svg)
 
 ## Hello Operator
 
@@ -22,3 +22,8 @@ Right now, Co-operator runs `Type 1` on the grid & returns.
 ## Hacking
 
 Co-operator is written in CoffeeScript and built with the design prototyping tool [Framer](https://github.com/koenbok/Framer). If you're familiar with Framer, open up `co-operator.framer` and dive right in. Generators are implemented as functions. Remixing `Type 1` is a good starting point.
+
+## License
+
+[MIT](LICENSE)
+Pocket Operator SVG rights to [Teenage Engineering](https://www.teenageengineering.com)
