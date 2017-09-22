@@ -6,6 +6,8 @@
 canvas = new BackgroundLayer
 	backgroundColor: Utils.randomColor()
 
+document.body.style.cursor = "auto"
+
 # Grid
 
 grid = []
