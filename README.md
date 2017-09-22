@@ -25,5 +25,4 @@ Co-operator is written in CoffeeScript and built with the design prototyping too
 
 ## License
 
-[MIT](LICENSE)
-Pocket Operator SVG rights to [Teenage Engineering](https://www.teenageengineering.com)
+[MIT](LICENSE), Pocket Operator SVG rights to [Teenage Engineering](https://www.teenageengineering.com)
