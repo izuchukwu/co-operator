@@ -2,7 +2,7 @@
 
 ## Hello Operator
 
-Co-operator is a seed of sorts. It's meant as a mental starting point so the [Pocket Operator](https://www.teenageengineering.com/products/po) is just a tiny little bit less blank canvas. For the peeps that're *really* new to music. It builds a grid then produces patterns by using a set of generator functions that each do things a little differently.
+Co-operator is a quick session notebook & mental starting point for playing with [Pocket Operator](https://www.teenageengineering.com/products/po). It builds patterns using matrix generator functions, and is a way to keep track of pattern storage across multiple Pocket Operators.
 
 ## Quick Start
 
@@ -11,18 +11,28 @@ Two ways to go:
 - Go to [izuchukwu.co/co-operator](http://izuchukwu.co/co-operator)
 - Clone & open `index.html`
 
-Right now, Co-operator runs `Type 1` on the grid & returns.
+## Sessions
 
-## Generators
+`I'll get back to you`
+
+## Parametric Beats
 
 ### Type 1
 
-`Type 1` divides the grid by 1 or 2 axes, with at least 1 symmetric axis, generates a pattern for one symmetric side, duplicates or mirrors the pattern across the symmetric axis, and outputs.
+`Type 1` divides the grid into quadrants, with at least one quadrant having a width or height of half the grid, though one quadrant may have a height or width of 0, dividing the grid into halves instead. It then generates a pattern for one symmetric side, duplicates or mirrors the pattern across the symmetric axis, and outputs.
 
-## Hacking
+## Contributing
 
-Co-operator is written in CoffeeScript and built with the design prototyping tool [Framer](https://github.com/koenbok/Framer). If you're familiar with Framer, open up `co-operator.framer` and dive right in. Generators are implemented as functions. Remixing `Type 1` is a good starting point.
+Co-operator is written in [CoffeeScript](https://coffeescript.org) and built with the design prototyping tool [Framer](https://github.com/koenbok/Framer). If you're familiar with Framer, the whole repo is an extension-less Framer project. Open it and dive right in. Development takes place on the `gh-pages` branch.
+
+###### Interface
+
+The interface is a series of iPhone-ish-sized `Panel` layer views managed by a `PanelFlowComponent`. The UI itself is exported from the Sketch file in the repo.
+
+###### Parametric Beat Generation
+
+Parametric beat generators are implemented as `Generator` subclasses that take in and export `Generation` payloads, the most important property of which is a `Pattern` object, representing a pattern on a Pocket Operator.
 
 ## License
 
-[MIT](LICENSE), Pocket Operator SVG rights to [Teenage Engineering](https://www.teenageengineering.com)
+[MIT](LICENSE), Pocket Operator image rights to [Teenage Engineering](https://www.teenageengineering.com)
