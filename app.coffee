@@ -1,6 +1,5 @@
 # co-operator
-## session notebook & parametric beats,
-## for pocket operator
+## parametric beats, for pocket operator
 
 # framer
 ## basic environment setup
@@ -218,11 +217,12 @@ class Grid extends Layer
 		@showsDivider = options.showsDivider ? false
 		
 		@divider = new Layer
-				backgroundColor: "rgba(0,0,0,0.1)"
-				width: @beepSize / 6
-				height: @beepSize / 6
-				borderRadius: @beepSize / 6
-				visible: @showsDivider
+			name: "Divider"
+			backgroundColor: "rgba(0,0,0,0.1)"
+			width: @beepSize / 6
+			height: @beepSize / 6
+			borderRadius: @beepSize / 6
+			visible: @showsDivider
 		@addSubLayer @divider
 		
 		@beeps = []
@@ -231,7 +231,7 @@ class Grid extends Layer
 			@beeps[row] = []
 			for column in [0..3]
 				beep = new Beep
-					name: "Beep row #{row + 1}, column #{column + 1}"
+					name: "Beep (#{row + 1}, #{column + 1})"
 					size: @beepSize
 					x: column * (@beepSize * 2)
 					y: row * (@beepSize * 2)
@@ -268,7 +268,8 @@ class Beep extends Layer
 # nice
 
 grid = new Grid
-	beepSize: if Utils.isPhone() then 40 else 50
+	name: "Grid"
+	beepSize: 50
 grid.center()
 
 generate = ->
