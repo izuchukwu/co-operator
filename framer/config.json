@@ -1,6 +1,6 @@
 {
   "orientation" : 0,
-  "updateDelay" : 0.3,
+  "updateDelay" : 0,
   "designModeSelected" : 0,
   "cachedDeviceHeight" : 0,
   "contentScale" : 1,
@@ -10,10 +10,10 @@
   "propertyPanelToggleStates" : {
 
   },
-  "projectId" : "013052C5-86CA-4000-BA8A-E7DD29814515",
+  "projectId" : "67250C38-0DBD-47FB-A308-C3CB9358210A",
   "deviceOrientation" : 0,
   "selectedHand" : "",
-  "showBezel" : false,
+  "showBezel" : 0,
   "foldedCodeRanges" : [
 
   ],
