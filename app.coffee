@@ -6,6 +6,7 @@
 
 document.body.style.cursor = "auto"
 Framer.Extras.Preloader.disable()
+Framer.Extras.Hints.disable()
 
 Function::property = (property, methods) ->
 	Object.defineProperty @prototype, property, methods
@@ -269,7 +270,7 @@ class Beep extends Layer
 
 grid = new Grid
 	name: "Grid"
-	beepSize: 50
+	beepSize: if Utils.isPhone() then 40 else 50
 grid.center()
 
 generate = ->
