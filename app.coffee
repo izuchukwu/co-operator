@@ -11,12 +11,9 @@ Framer.Extras.Preloader.disable()
 Function::property = (property, methods) ->
 	Object.defineProperty @prototype, property, methods
 
-logs = true
-log = (args...) -> print args if logs
-
 # pattern
 ## a 4x4 single pocket operator pattern matrix
-## with helper methods for quadrant operations
+## with convenient methods for quadrant operations
 
 class Pattern
 	constructor: (@divider) ->
@@ -44,23 +41,12 @@ class Pattern
 	applyQuadrant: (quadrant, sector) ->
 		# verify frame
 		expectedFrame = @frameForQuadrant sector
-		log "q-origin-mismatch:", quadrant.origin.x isnt expectedFrame.origin.x, quadrant.origin.y isnt expectedFrame.origin.y
-		log "q-size-mismatch:", quadrant.size.width isnt expectedFrame.size.width, quadrant.size.height isnt expectedFrame.size.height
-		if not quadrant.matchesOrigin expectedFrame
-			log "given:", quadrant.origin
-			log "expected:", expectedFrame.origin
-			return false
-		if not quadrant.matchesSize expectedFrame
-			log "given:", quadrant.size
-			log "expected:", expectedFrame.size
-			return false
+		if not quadrant.matchesOrigin expectedFrame then return false
+		if not quadrant.matchesSize expectedFrame then return false
 		
 		# apply it
 		pattern = @
 		quadrant.iterate (quadrant, row, column, absoluteRow, absoluteColumn) ->
-			log quadrant
-			log row, column, absoluteRow, absoluteColumn
-			log pattern
 			pattern[absoluteRow][absoluteColumn] = quadrant[row][column]
 		return true
 	
@@ -71,14 +57,17 @@ class Pattern
 				if pattern[row][column] then blank = false
 			return blank
 
+# pattern quadrant
+## a quadrant of a pattern
+## with convenient methods for duplication, mirroring,
+## and quadrant comparisons
+
 class Quadrant
 	constructor: (@pattern, @origin, @size) ->
 		if @isVoid then return
 		for row in [0..@size.height - 1]
 			@[row] = []
 			for column in [0..@size.width - 1]
-				log @size
-				log @origin, row, column
 				@[row].push @pattern[@origin.y + row][@origin.x + column]
 	
 	iterate: (callback) ->
@@ -101,8 +90,6 @@ class Quadrant
 	
 	copy: (original) ->
 		if not @matchesSize original
-			log "mine:", @size, @origin
-			log "original:", original.size, original.origin
 			throw "Quadrant mismatch"
 		@iterate (quadrant, row, column) ->
 			quadrant[row][column] = original[row][column]
@@ -112,8 +99,6 @@ class Quadrant
 	mirror: (type) ->
 		@iterate (quadrant, row, column) ->
 			if type is Quadrant.MirrorUpDown
-				log quadrant
-				log row, column, quadrant.size.height - 1
 				quadrant[row][column] = quadrant[(quadrant.size.height - 1) - row][column]
 			if type is Quadrant.MirrorLeftRight
 				quadrant[row][column] = quadrant[row][(quadrant.size.width - 1) - column]
@@ -124,8 +109,10 @@ class Quadrant
 
 # type 1
 ## a quadrant-based, semi-symmetric parametric generator
-## accepts seedWidth, seedHeight (range 1-4, of which at least one side is 2), and kind
-## kinds: Type1.Duplicate, Type1.Mirror
+## accepts a divider location to divide the pattern into quadrants
+## and an operation to perform on complimentary quadrants
+## Duplicate duplicates master quadrants onto their complimentaries
+## Mirror mirrors master quadrants onto their complimentaries
 
 class Type1
 	@Duplicate = "duplicate"
@@ -207,7 +194,7 @@ class Type1
 		
 		if pattern.isBlank
 			return @generate()
-		else return pattern
+		else return {pattern: pattern, divider: @divider}
 	
 	randomizeQuadrant: (quadrant) ->
 		quadrant.iterate (quadrant, row, column) ->
@@ -217,7 +204,81 @@ class Type1
 	@property 'symmetricAxis',
 		get: -> if @divider.x is 2 then "x" else "y"
 
-# run
+# grid
+## grid displays patterns
+## along with a small divider indicator
 
-generator = new Type1
-log "generated:", generator.generate()
+class Grid extends Layer
+	constructor: (options) ->
+		super options
+		@beepSize = options.beepSize
+		@width = @beepSize * 7
+		@height = @beepSize * 7
+		@backgroundColor = "rgba(0,0,0,0)"
+		@showsDivider = options.showsDivider ? false
+		
+		@divider = new Layer
+				backgroundColor: "rgba(0,0,0,0.1)"
+				width: @beepSize / 6
+				height: @beepSize / 6
+				borderRadius: @beepSize / 6
+				visible: @showsDivider
+		@addSubLayer @divider
+		
+		@beeps = []
+		
+		for row in [0..3]
+			@beeps[row] = []
+			for column in [0..3]
+				beep = new Beep
+					name: "Beep row #{row + 1}, column #{column + 1}"
+					size: @beepSize
+					x: column * (@beepSize * 2)
+					y: row * (@beepSize * 2)
+				@beeps[row].push beep
+				@addSubLayer beep
+	
+	iterate: (callback) ->
+		for row in [0..3]
+			for column in [0..3]
+				callback @beeps[row][column], row, column
+	
+	setPattern: (pattern) ->
+		@iterate (beep, row, column) ->
+			beep.active = pattern[row][column]
+	
+	setDivider: (position) ->
+		@divider.x = ((@beepSize * 2) * position.x) - (@beepSize / 2) - (@beepSize / 6 / 2)
+		@divider.y = ((@beepSize * 2) * position.y) - (@beepSize / 2) - (@beepSize / 6 / 2)
+		
+class Beep extends Layer
+	constructor: (options) ->
+		super options
+		@width = options.size
+		@height = options.size
+		@borderRadius = options.size / 2
+		@on = false
+	
+	@property 'active',
+		get: -> @_active
+		set: (@_active) ->
+			if @active then @backgroundColor = "#fff"
+			else @backgroundColor = "rgba(0,0,0,0.1)"
+
+# nice
+
+grid = new Grid
+	beepSize: if Utils.isPhone() then 40 else 50
+grid.center()
+
+generate = ->
+	generator = new Type1
+	{pattern, divider} = generator.generate()
+	grid.setPattern pattern
+	grid.setDivider divider
+	Screen.backgroundColor = Utils.randomColor()
+
+grid.onTap ->
+	generate()
+	
+generate()
