@@ -2,7 +2,7 @@
 
 ## Hello Operator
 
-Co-operator is a quick session notebook & mental starting point for playing with [Pocket Operator](https://www.teenageengineering.com/products/po). It builds patterns using matrix generator functions, and is a way to keep track of pattern storage across multiple Pocket Operators.
+Co-operator is a quick session notebook & mental starting point for playing with [Pocket Operator](https://www.teenageengineering.com/products/po). It builds patterns using matrix generator functions, and is a way to keep track of pattern storage, sync, & playback across multiple Pocket Operators.
 
 ## Quick Start
 
@@ -23,7 +23,7 @@ Two ways to go:
 
 ## Contributing
 
-Co-operator is written in [CoffeeScript](https://coffeescript.org) and built with the design prototyping tool [Framer](https://github.com/koenbok/Framer). If you're familiar with Framer, the whole repo is an extension-less Framer project. Open it and dive right in. Development takes place on the `gh-pages` branch.
+Co-operator is written in [CoffeeScript](https://coffeescript.org) and built with the design prototyping tool [Framer](https://github.com/koenbok/Framer). If you're familiar with Framer, the whole repo is an extension-less Framer project. Clone or download it, rename the folder to `co-operator.framer` and dive right in. Development takes place on the `gh-pages` branch.
 
 ###### Interface
 
